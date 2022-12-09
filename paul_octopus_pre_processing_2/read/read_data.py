@@ -5,7 +5,7 @@ import ast
 
 def read_historical_results():
     
-    historical_results = pd.read_csv('datasets/historical-results.csv', parse_dates = ['date'])    
+    historical_results = pd.read_csv('paul_octopus_pre_processing_2/datasets/historical-results.csv', parse_dates = ['date'])    
     return historical_results
 
 def read_train_test_datasets(v_path):

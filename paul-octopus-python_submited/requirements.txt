@@ -1,0 +1,6 @@
+Flask==2.2.2
+azure-identity==1.11.0
+azure-storage-blob==12.14.1
+pandas
+joblib==1.2.0
+scikit-learn

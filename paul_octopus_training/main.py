@@ -45,11 +45,11 @@ if __name__ == '__main__':
 
     
     X_train, y_train, dataset_test = reader.read_datasets(C_NR_CLASSES)
-    #v_model = knn_classifier.fit(X_train, y_train)
+    v_model = knn_classifier.fit(X_train, y_train)
     #v_model = svm_classifier.fit(X_train, y_train)
     #v_model = randomForest_classifier.fit(X_train, y_train)
     #v_model = naivebayes_classifier.fit(X_train, y_train)
-    #mlp_classifier.fit(X_train, y_train)
+    #v_model = mlp_classifier.fit(X_train, y_train)
     #v_model = logistic_regression_classifier.fit(X_train, y_train)
     #v_model = linear_svm.fit(X_train, y_train)
     #v_model = lda.fit(X_train, y_train)
@@ -62,6 +62,6 @@ if __name__ == '__main__':
     
     #v_th_score = 3
     #validator.validate(v_model, dataset_test[dataset_test[:, -1] < v_th_score])
-    v_model = load("output/model/MLPClassifier.h5")
+    #v_model = load("output/model/MLPClassifier.h5")
     validator.validate(v_model, dataset_test)
     print("Terminou")

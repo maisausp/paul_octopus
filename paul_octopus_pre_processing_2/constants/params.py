@@ -16,3 +16,11 @@ C_2022_WC = ['2022-11-20', ['Australia', 'Iran', 'Japan', 'Qatar', 'Saudi Arabia
 C_EXTRACT_NR_EMPATES = True # feature idx 3
 C_EXTRACT_NR_VICTORIES = True  # feature idx 4
 C_EXTRACT_NR_LOSES = True  # feature idx 5
+
+# Type Features extracted
+C_EXTRACT_AVERAGE = True
+
+# Period extracted
+C_EXTRACT_JUST_PARTICIPANTS = True
+C_EXTRACT_32_or_1_year = True
+C_EXTRACT_YEARS = 4

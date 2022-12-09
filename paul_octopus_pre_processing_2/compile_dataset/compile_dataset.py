@@ -9,7 +9,14 @@ def compile_features_by_world_cup_edition(p_raw_dataset, p_wc_dataset):
   Extraí as features de todos os participantes presentes no parametro 'p_wc_dataset[1]' de partidas anteriores ao parametro 'p_wc_dataset[0]' conforme conjunto de 
   partidas fornecido pelo parametro 'p_raw_dataset'.
   '''
-  v_past_games_of_participants = extractor.extract_past_games_of_participants(p_raw_dataset, p_wc_dataset)
+  if(global_params.C_EXTRACT_32_or_1_year):
+    if(global_params.C_EXTRACT_JUST_PARTICIPANTS):
+      v_past_games_of_participants = extractor.extract_past_year_games_of_participants(p_raw_dataset, p_wc_dataset)
+    else:
+      v_past_games_of_participants = extractor.extract_past_year_games(p_raw_dataset, p_wc_dataset)
+  else:
+    v_past_games_of_participants = extractor.extract_past_games_of_participants(p_raw_dataset, p_wc_dataset)
+
   v_features = dict()
   
   for participant in p_wc_dataset[1]:

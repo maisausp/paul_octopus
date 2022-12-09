@@ -1,7 +1,7 @@
 import numpy as np
 from keras.utils import np_utils
 
-def read_datasets(p_nr_classes, p_path = 'dataset/'):
+def read_datasets(p_nr_classes, p_path = 'paul_octopus_training/dataset/'):
     
     dataset_train = np.loadtxt(p_path + 'dataset_train.txt', delimiter=';')
     dataset_test = np.loadtxt(p_path + 'dataset_test.txt', delimiter=';')

@@ -25,7 +25,7 @@ def plot_history(p_history):
   plt.legend(['train', 'validation'], loc='upper left')
   plt.ylim(0, 1)  
   plt.show()
-  plt.savefig("images/history_accuracy.png", format="PNG")
+  plt.savefig("paul_octopus_training/images/history_accuracy.png", format="PNG")
   plt.close()
   
   # summarize history for loss
@@ -36,7 +36,7 @@ def plot_history(p_history):
   plt.xlabel('epoch')
   plt.legend(['train', 'validation'], loc='upper left')
   plt.show()
-  plt.savefig("images/history_loss.png", format="PNG")
+  plt.savefig("paul_octopus_training/images/history_loss.png", format="PNG")
 
 def plot_confusion_matrix(p_y_real, p_y_predicted):
 
@@ -48,4 +48,4 @@ def plot_confusion_matrix(p_y_real, p_y_predicted):
 
   disp.plot()
   plt.show()
-  plt.savefig("images/confusion_matrix.png", format="PNG")
+  plt.savefig("paul_octopus_training/images/confusion_matrix.png", format="PNG")

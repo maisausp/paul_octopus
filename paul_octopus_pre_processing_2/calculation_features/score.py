@@ -1,5 +1,6 @@
 import numpy as np
 import constants.params as global_params
+import math
 
 def update_score_statistics(p_team_score, p_opponent_score, p_score_statistics):
   '''
@@ -60,4 +61,13 @@ def get_participant_score_from_games(p_participant, p_games):
 
     i = i + 1
 
-  return v_features
+  result = v_features
+
+  if global_params.C_EXTRACT_AVERAGE and j > 0:
+    result[0] = result[0] / j
+    result[1] = result[1] / j
+
+  if math.isnan(result.sum()):
+    print(p_participant)
+
+  return result
