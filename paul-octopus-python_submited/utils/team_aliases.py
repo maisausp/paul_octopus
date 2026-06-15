@@ -1,6 +1,8 @@
 TEAM_ALIASES = {
     'Cabo Verde': 'Cape Verde',
     'Cape Verde Islands': 'Cape Verde',
+    'China': 'China PR',
+    'China PR': 'China PR',
     'Curacao': 'Cura\u00e7ao',
     'Czechia': 'Czech Republic',
     'Czech Republic': 'Czech Republic',

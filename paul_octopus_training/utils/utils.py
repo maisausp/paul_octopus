@@ -1,8 +1,9 @@
-from keras.callbacks import ModelCheckpoint
 from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score
 
 def getCallBacks(vPathFileName = 'output/Checkpoint/'):
+    from keras.callbacks import ModelCheckpoint
+
     '''
     Função chamada durante o treino para salvar os pesos obtidos na RN.
     '''

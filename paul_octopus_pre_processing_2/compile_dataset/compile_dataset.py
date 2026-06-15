@@ -4,6 +4,25 @@ import constants.params as global_params
 import constants.team_aliases as team_aliases
 import numpy as np
 
+C_LEGACY_TRAIN_WC_EDITIONS = [
+  global_params.C_2002_WC,
+  global_params.C_2006_WC,
+  global_params.C_2010_WC,
+  global_params.C_2014_WC,
+]
+
+C_TRAIN_WC_EDITIONS_FOR_2026_VALIDATION = [
+  global_params.C_2002_WC,
+  global_params.C_2006_WC,
+  global_params.C_2010_WC,
+  global_params.C_2014_WC,
+  global_params.C_2018_WC,
+]
+
+C_TEST_WC_EDITION_FOR_2026 = global_params.C_2022_WC
+C_TEST_WC_EDITION_FALLBACK = global_params.C_2018_WC
+C_PREDICTION_WC_EDITION = global_params.C_2026_WC
+
 def compile_features_by_world_cup_edition(p_raw_dataset, p_wc_dataset):
   
   '''
@@ -55,8 +74,8 @@ def compile_dataset (p_cup_games, p_features, p_nr_features_by_sample):
 
   for i in range(p_cup_games.shape[0]):      
 
-    v_home_team = p_cup_games.iloc[i][1]
-    v_away_team = p_cup_games.iloc[i][2]
+    v_home_team = team_aliases.normalize_team_name(p_cup_games.iloc[i][1])
+    v_away_team = team_aliases.normalize_team_name(p_cup_games.iloc[i][2])
     v_home_team_score = p_cup_games.iloc[i][3]
     v_away_team_score = p_cup_games.iloc[i][4]
     
@@ -80,20 +99,31 @@ def extract_dataset_by_cup(p_raw_dataset, p_world_cup_edition_dataset):
 
   return v_cup_edition_dataset
 
-def get_train_test_data_sets(p_raw_dataset):
+def extract_dataset_by_cups(p_raw_dataset, p_world_cup_editions):
+  
+  v_datasets = [extract_dataset_by_cup(p_raw_dataset, v_world_cup_edition) for v_world_cup_edition in p_world_cup_editions]
+  return np.concatenate(v_datasets, axis=0)
+
+def has_world_cup_games(p_raw_dataset, p_world_cup_edition_dataset):
+
+  v_games = extractor.extract_wc_games_by_edition(p_raw_dataset, p_world_cup_edition_dataset[0])
+  return v_games.shape[0] > 0
+
+def get_train_test_data_sets(p_raw_dataset, p_train_wc_editions = C_TRAIN_WC_EDITIONS_FOR_2026_VALIDATION, p_test_wc_edition = C_TEST_WC_EDITION_FOR_2026, p_prediction_wc_edition = C_PREDICTION_WC_EDITION):
   
   p_raw_dataset = extractor.select_interesting_columns(p_raw_dataset)
 
-  dataset_train = extract_dataset_by_cup(p_raw_dataset, global_params.C_2002_WC)
-  dataset_train = np.append(dataset_train, extract_dataset_by_cup(p_raw_dataset, global_params.C_2006_WC), axis=0)
-  dataset_train = np.append(dataset_train, extract_dataset_by_cup(p_raw_dataset, global_params.C_2010_WC), axis=0)
-  dataset_train = np.append(dataset_train, extract_dataset_by_cup(p_raw_dataset, global_params.C_2014_WC), axis=0)
-  
-  dataset_test = extract_dataset_by_cup(p_raw_dataset, global_params.C_2018_WC)
+  if has_world_cup_games(p_raw_dataset, p_test_wc_edition):
+    dataset_train = extract_dataset_by_cups(p_raw_dataset, p_train_wc_editions)
+    dataset_test = extract_dataset_by_cup(p_raw_dataset, p_test_wc_edition)
+  else:
+    dataset_train = extract_dataset_by_cups(p_raw_dataset, C_LEGACY_TRAIN_WC_EDITIONS)
+    print('Aviso: dataset de teste solicitado não encontrado no histórico. Usando treino 2002-2014 e teste 2018.')
+    dataset_test = extract_dataset_by_cup(p_raw_dataset, C_TEST_WC_EDITION_FALLBACK)
 
-  features_2022, _ = compile_features_by_world_cup_edition(p_raw_dataset, global_params.C_2022_WC)
+  features_prediction, _ = compile_features_by_world_cup_edition(p_raw_dataset, p_prediction_wc_edition)
 
-  return dataset_train, dataset_test, features_2022
+  return dataset_train, dataset_test, features_prediction
 
 def set_score_threshold(v_dataset, v_th_min = 0, v_th_max = 10):
   

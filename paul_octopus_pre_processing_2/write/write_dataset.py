@@ -1,13 +1,16 @@
 import numpy as np
+import os
 from matplotlib import pyplot as plt
 
-def write_datasets(p_path, dataset_train, dataset_test, dataset_2022):
+def write_datasets(p_path, dataset_train, dataset_test, dataset_prediction, p_prediction_dataset_name = 'dataset_2026.txt'):
+    
+    os.makedirs(p_path + '/feature_vs_label', exist_ok=True)
     
     np.savetxt( p_path + '/dataset_train.txt', dataset_train, delimiter=';')
     np.savetxt( p_path + '/dataset_test.txt', dataset_test, delimiter=';')
 
-    filehandler = open(p_path + '/dataset_2022.txt', 'wt')
-    filehandler.write(str(dataset_2022))
+    filehandler = open(p_path + '/' + p_prediction_dataset_name, 'wt')
+    filehandler.write(str(dataset_prediction))
     filehandler.close()    
 
     plot_feature_vs_label(p_path + "/feature_vs_label/train_", dataset_train)

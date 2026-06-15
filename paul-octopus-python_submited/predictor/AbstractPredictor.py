@@ -4,7 +4,7 @@ import utils.global_variables as global_variables
 from pre_processing.pre_processing_data import *
 from joblib import load
 from utils.team_aliases import normalize_team_name
-PATH_FILE = "/home/maisa/Documentos/ciandt/paul_octopus/paul-octopus-python_submited/"
+from utils.paths import get_model_file
 
 class AbstractPredictor(ABC):
 
@@ -18,7 +18,7 @@ class AbstractPredictor(ABC):
         predictions = []
         global_variables.participants_score = dict()
         raw_data = read_historical_results()
-        global_variables.model = load(PATH_FILE + 'MLPClassifier.h5')
+        global_variables.model = load(get_model_file())
         participants = set()
 
         for match in matches:

@@ -3,6 +3,7 @@ import validation.validation as validator
 import read.read as reader
 import sklearn.utils as sk_utils
 import numpy as np
+import os
 from joblib import dump, load
 import classifiers.knn as knn_classifier
 import classifiers.SVM as svm_classifier
@@ -63,5 +64,9 @@ if __name__ == '__main__':
     #v_th_score = 3
     #validator.validate(v_model, dataset_test[dataset_test[:, -1] < v_th_score])
     #v_model = load("output/model/MLPClassifier.h5")
+    os.makedirs("paul-octopus-2026/model", exist_ok=True)
+    os.makedirs("paul_octopus_training/output/model", exist_ok=True)
+    dump(v_model, "paul-octopus-2026/model/MLPClassifier.h5")
+    dump(v_model, "paul_octopus_training/output/model/MLPClassifier.h5")
     validator.validate(v_model, dataset_test)
     print("Terminou!")

@@ -51,4 +51,8 @@ def get_participant_score_from_games(p_participant, p_historical_games, p_max_ga
 
     i = i + 1
 
+  if j > 0:
+    v_features[0] = v_features[0] / j
+    v_features[1] = v_features[1] / j
+
   return v_features
