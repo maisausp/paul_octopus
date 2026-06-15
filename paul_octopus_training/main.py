@@ -64,4 +64,4 @@ if __name__ == '__main__':
     #validator.validate(v_model, dataset_test[dataset_test[:, -1] < v_th_score])
     #v_model = load("output/model/MLPClassifier.h5")
     validator.validate(v_model, dataset_test)
-    print("Terminou")
+    print("Terminou!")
