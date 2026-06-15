@@ -3,6 +3,7 @@ from utils.csv import *
 import utils.global_variables as global_variables
 from pre_processing.pre_processing_data import *
 from joblib import load
+from utils.team_aliases import normalize_team_name
 PATH_FILE = "/home/maisa/Documentos/ciandt/paul_octopus/paul-octopus-python_submited/"
 
 class AbstractPredictor(ABC):
@@ -21,24 +22,18 @@ class AbstractPredictor(ABC):
         participants = set()
 
         for match in matches:
-            participants.add(match['home'])
-            participants.add(match['away'])
+            participants.add(normalize_team_name(match['home']))
+            participants.add(normalize_team_name(match['away']))
         
-        list_participants = str(matches) + 'United States' # Adição para tratamento de diferença de nomenclatura de seleções
-
-        games_of_participants = raw_data[raw_data['home_team'].apply(lambda x: x in list_participants)]
-        games_of_participants = games_of_participants[games_of_participants['away_team'].apply(lambda x: x in list_participants)]
+        games_of_participants = raw_data[raw_data['home_team'].apply(lambda x: normalize_team_name(x) in participants)]
+        games_of_participants = games_of_participants[games_of_participants['away_team'].apply(lambda x: normalize_team_name(x) in participants)]
         filtered_data = games_of_participants.sort_values(by='date', ascending=False)
 
         for match in matches:
-            team_home = team_home_fix = match['home']
-            team_away = team_away_fix = match['away']
-
-            if team_home == 'USA':
-                team_home_fix = 'United States'
-            if team_away == 'USA':
-                team_away_fix = 'United States'
-
+            team_home = match['home']
+            team_away = match['away']
+            team_home_fix = normalize_team_name(team_home)
+            team_away_fix = normalize_team_name(team_away)
 
             if team_home not in global_variables.participants_score.keys():
                 global_variables.participants_score[team_home] = get_participant_score_from_games(team_home_fix, filtered_data, len(participants))

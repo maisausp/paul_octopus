@@ -1,6 +1,7 @@
 import selection_data.extractor as extractor
 import calculation_features.score as calculator
 import constants.params as global_params
+import constants.team_aliases as team_aliases
 import numpy as np
 
 def compile_features_by_world_cup_edition(p_raw_dataset, p_wc_dataset):
@@ -9,19 +10,21 @@ def compile_features_by_world_cup_edition(p_raw_dataset, p_wc_dataset):
   Extraí as features de todos os participantes presentes no parametro 'p_wc_dataset[1]' de partidas anteriores ao parametro 'p_wc_dataset[0]' conforme conjunto de 
   partidas fornecido pelo parametro 'p_raw_dataset'.
   '''
+  v_wc_dataset = [p_wc_dataset[0], team_aliases.normalize_team_names(p_wc_dataset[1])]
+
   if(global_params.C_EXTRACT_32_or_1_year):
     if(global_params.C_EXTRACT_JUST_PARTICIPANTS):
-      v_past_games_of_participants = extractor.extract_past_year_games_of_participants(p_raw_dataset, p_wc_dataset)
+      v_past_games_of_participants = extractor.extract_past_year_games_of_participants(p_raw_dataset, v_wc_dataset)
     else:
-      v_past_games_of_participants = extractor.extract_past_year_games(p_raw_dataset, p_wc_dataset)
+      v_past_games_of_participants = extractor.extract_past_year_games(p_raw_dataset, v_wc_dataset)
   else:
-    v_past_games_of_participants = extractor.extract_past_games_of_participants(p_raw_dataset, p_wc_dataset)
+    v_past_games_of_participants = extractor.extract_past_games_of_participants(p_raw_dataset, v_wc_dataset)
 
   v_features = dict()
   
-  v_nr_participants = len(p_wc_dataset[1])
+  v_nr_participants = len(v_wc_dataset[1])
 
-  for participant in p_wc_dataset[1]:
+  for participant in v_wc_dataset[1]:
     v_features[participant] = calculator.get_participant_score_from_games(participant, v_past_games_of_participants, v_nr_participants)
   
   v_nr_features_by_sample = 2*calculator.get_nr_features_by_participant()
@@ -70,8 +73,9 @@ def extract_dataset_by_cup(p_raw_dataset, p_world_cup_edition_dataset):
   '''
   Obtém o dataset para a edição da copa informada pelo parametro 'p_world_cup_edition_dataset'. Para cálculo da features são usados os dados originais do parametro 'p_raw_dataset'.
   '''
-  v_cup_edition_games = extractor.extract_wc_games_by_edition(p_raw_dataset, p_world_cup_edition_dataset[0])
-  v_features_by_cup_edition, v_nr_features_by_sample = compile_features_by_world_cup_edition(p_raw_dataset, p_world_cup_edition_dataset)  
+  v_world_cup_edition_dataset = [p_world_cup_edition_dataset[0], team_aliases.normalize_team_names(p_world_cup_edition_dataset[1])]
+  v_cup_edition_games = extractor.extract_wc_games_by_edition(p_raw_dataset, v_world_cup_edition_dataset[0])
+  v_features_by_cup_edition, v_nr_features_by_sample = compile_features_by_world_cup_edition(p_raw_dataset, v_world_cup_edition_dataset)  
   v_cup_edition_dataset = compile_dataset(v_cup_edition_games, v_features_by_cup_edition, v_nr_features_by_sample)
 
   return v_cup_edition_dataset
