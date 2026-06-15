@@ -22,19 +22,19 @@ def update_score_statistics(p_team_score, p_opponent_score, p_score_statistics):
 
 
 
-def get_participant_score_from_games(p_participant, p_historical_games):
+def get_participant_score_from_games(p_participant, p_historical_games, p_max_games = None):
 
   '''
   Extrai o score do participante definido no parametro 'p_participant' conforme conjuto de partidas em 'p_historical_games'.
   '''
 
-  v_nr_participants = 32
   v_nr_features_participant = 5
   i = j = 0
   
   v_features = np.zeros(v_nr_features_participant)
+  v_max_games = p_max_games if p_max_games is not None else p_historical_games.shape[0]
   
-  while j < v_nr_participants and i < p_historical_games.shape[0]:  
+  while j < v_max_games and i < p_historical_games.shape[0]:  
     
     v_home_team = p_historical_games.iloc[i][1]
     v_away_team = p_historical_games.iloc[i][2]

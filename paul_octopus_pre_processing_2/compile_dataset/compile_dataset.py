@@ -19,8 +19,10 @@ def compile_features_by_world_cup_edition(p_raw_dataset, p_wc_dataset):
 
   v_features = dict()
   
+  v_nr_participants = len(p_wc_dataset[1])
+
   for participant in p_wc_dataset[1]:
-    v_features[participant] = calculator.get_participant_score_from_games(participant, v_past_games_of_participants)
+    v_features[participant] = calculator.get_participant_score_from_games(participant, v_past_games_of_participants, v_nr_participants)
   
   v_nr_features_by_sample = 2*calculator.get_nr_features_by_participant()
   return v_features, v_nr_features_by_sample
@@ -46,7 +48,7 @@ def compile_dataset (p_cup_games, p_features, p_nr_features_by_sample):
     1a: feature seleação A, feature seleção B, número de gols de A
     1a: feature seleação B, feature seleção A, número de gols de B
   '''
-  v_dataset = np.zeros((2 * global_params.C_NR_GAMES, p_nr_features_by_sample + 1))
+  v_dataset = np.zeros((2 * p_cup_games.shape[0], p_nr_features_by_sample + 1))
 
   for i in range(p_cup_games.shape[0]):      
 

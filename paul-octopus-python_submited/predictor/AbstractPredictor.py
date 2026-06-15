@@ -18,6 +18,11 @@ class AbstractPredictor(ABC):
         global_variables.participants_score = dict()
         raw_data = read_historical_results()
         global_variables.model = load(PATH_FILE + 'MLPClassifier.h5')
+        participants = set()
+
+        for match in matches:
+            participants.add(match['home'])
+            participants.add(match['away'])
         
         list_participants = str(matches) + 'United States' # Adição para tratamento de diferença de nomenclatura de seleções
 
@@ -36,9 +41,9 @@ class AbstractPredictor(ABC):
 
 
             if team_home not in global_variables.participants_score.keys():
-                global_variables.participants_score[team_home] = get_participant_score_from_games(team_home_fix, filtered_data)
+                global_variables.participants_score[team_home] = get_participant_score_from_games(team_home_fix, filtered_data, len(participants))
             if team_away not in global_variables.participants_score.keys():
-                global_variables.participants_score[team_away] = get_participant_score_from_games(team_away_fix, filtered_data)
+                global_variables.participants_score[team_away] = get_participant_score_from_games(team_away_fix, filtered_data, len(participants))
             predictions.append(self.predict_match(team_home, team_away))
 
         return predictions

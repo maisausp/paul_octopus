@@ -33,7 +33,7 @@ def get_nr_features_by_participant():
   return 2
 
 
-def get_participant_score_from_games(p_participant, p_games):
+def get_participant_score_from_games(p_participant, p_games, p_max_games = None):
 
   '''
   Extraí o score do participante definido no parametro 'p_participant' conforme conjuto de partidas em 'p_games'.
@@ -43,8 +43,10 @@ def get_participant_score_from_games(p_participant, p_games):
   
   v_features = np.zeros(get_nr_features_by_participant())
   
-  # As estatísticas são extraídas de até C_NR_PARTICIPANTS partidas.
-  while j < global_params.C_NR_PARTICIPANTS and i < p_games.shape[0]:  
+  v_max_games = p_max_games if p_max_games is not None else p_games.shape[0]
+
+  # As estatísticas são extraídas de até uma partida por participante da edição.
+  while j < v_max_games and i < p_games.shape[0]:  
     
     v_home_team = p_games.iloc[i][1]
     v_away_team = p_games.iloc[i][2]
